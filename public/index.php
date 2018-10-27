@@ -51,6 +51,10 @@ $map->get('addProject','/project/add',[
   'controller'=>'App\Controllers\ProjectController',
   'action'=>'getAddProjectAction'
 ]);
+$map->post('saveProject','/project/add',[
+  'controller'=>'App\Controllers\ProjectController',
+  'action'=>'getAddProjectAction'
+]);
 
 
 $matcher = $routerContainer->getMatcher();

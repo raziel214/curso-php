@@ -1,20 +1,21 @@
 <?php
 namespace  App\Controllers;
+use App\Models\Job;
 
-class JobsController{
+class JobsController extends BaseController{
 
-    public function getAddJobAction($request){
-        
+    public function getAddJobAction($request) {
 
-        if ($reuest->getMethod()=='POS') {
-            $postData= $request->getParsedBody();
-            $job=new Job();
-            $job->title =$postData['title'];
-            $job->description =$postData['description'];
+        if ($request->getMethod() == 'POST') {
+            $postData = $request->getParsedBody();
+            $job = new Job();
+            $job->title = $postData['title'];
+            $job->description = $postData['description'];
             $job->save();
         }
-        include_once('../views/addJob.php');
 
-    }
+        // include '../views/addJob.php';
+        echo $this->renderHTML('addJob.twig');
+    } 
 
 }
