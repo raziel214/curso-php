@@ -13,7 +13,7 @@
     </head>
     <body>
         <h1>Add Job</h1>
-        <form action="jobs/add" method="post">
+        <form action="/jobs/add" method="post">
             
             <label for="">Title:</label>
             <input type="text" name="title" id="title">
