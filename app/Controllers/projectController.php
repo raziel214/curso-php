@@ -13,7 +13,7 @@ class ProjectController extends BaseController{
                 $project->save();
             }
             //include_once('../views/addProject.php');
-            echo $this->renderHTML('addProject.twig');
+            return $this->renderHTML('addProject.twig');
 
     }
 }
