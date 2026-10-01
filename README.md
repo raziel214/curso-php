@@ -9,7 +9,24 @@ organizado con **arquitectura limpia** (capas Dominio → Aplicación → Infrae
 - Composer 2
 - MySQL/MariaDB (o SQLite para desarrollo)
 
-## Puesta en marcha
+## Con Docker (recomendado)
+
+```bash
+docker compose up --build
+```
+
+- App: http://localhost:8080 — panel en http://localhost:8080/login
+- Usuario inicial: `admin@cursophp.local` / `admin12345` (cámbialo en `docker-compose.yml`)
+- MySQL expuesto en `localhost:3307` (usuario `cursophp` / `cursophp`)
+
+Al arrancar, el contenedor espera a MySQL, ejecuta las migraciones y crea el usuario administrador.
+Para correr las pruebas dentro de Docker:
+
+```bash
+docker run --rm -v "$PWD":/app -w /app composer:2 sh -c "composer install && vendor/bin/phpunit"
+```
+
+## Puesta en marcha sin Docker
 
 ```bash
 composer install                 # genera composer.lock con las versiones nuevas
