@@ -1,0 +1,19 @@
+{% extends "layout.twig" %}
+{% block title %}Panel{% endblock %}
+{% block content %}
+  <h1 class="h3 mb-4">Panel de administración</h1>
+  <div class="row g-3">
+    <div class="col-md-4"><div class="card"><div class="card-body">
+      <h2 class="h5">Trabajos</h2><p class="display-6">{{ jobsCount }}</p>
+      <a href="/admin/jobs" class="btn btn-primary btn-sm">Gestionar</a>
+    </div></div></div>
+    <div class="col-md-4"><div class="card"><div class="card-body">
+      <h2 class="h5">Proyectos</h2><p class="display-6">{{ projectsCount }}</p>
+      <a href="/admin/projects" class="btn btn-primary btn-sm">Gestionar</a>
+    </div></div></div>
+    <div class="col-md-4"><div class="card"><div class="card-body">
+      <h2 class="h5">Usuarios</h2><p class="text-muted">Administradores del panel</p>
+      <a href="/admin/users" class="btn btn-primary btn-sm">Gestionar</a>
+    </div></div></div>
+  </div>
+{% endblock %}

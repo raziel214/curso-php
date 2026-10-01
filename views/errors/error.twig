@@ -1,0 +1,9 @@
+{% extends "layout.twig" %}
+{% block title %}Error {{ status }}{% endblock %}
+{% block content %}
+  <div class="py-5 text-center">
+    <h1 class="display-4">{{ status }}</h1>
+    <p class="lead">{{ message }}</p>
+    <a href="/" class="btn btn-primary">Volver al inicio</a>
+  </div>
+{% endblock %}

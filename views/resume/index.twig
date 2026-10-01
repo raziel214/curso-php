@@ -1,0 +1,82 @@
+{% extends "layout.twig" %}
+
+{% block content %}
+  <div id="resume-header" class="row">
+    <div class="col-3">
+      <img id="profile-picture" src="https://ui-avatars.com/api/?name={{ name|url_encode }}&size=255" alt="{{ name }}">
+    </div>
+    <div class="col">
+      <h1>{{ name }}</h1>
+      <h2>PHP Developer</h2>
+      <ul>
+        <li>Mail: soulreavers214@gmail.com</li>
+        <li>LinkedIn: https://linkedin.com</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <h2 class="border-bottom-gray">Career Summary</h2>
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+        magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+      </p>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <div>
+        <h3 class="border-bottom-gray">Work Experience</h3>
+        <ul>
+          {% for job in jobs %}
+            <li class="work-position">
+              <h5>{{ job.title }}</h5>
+              <p>{{ job.description }}</p>
+              <p class="text-muted">{{ job.durationAsString }}</p>
+            </li>
+          {% else %}
+            <li class="text-muted">Sin experiencia registrada.</li>
+          {% endfor %}
+        </ul>
+      </div>
+
+      <div>
+        <h3 class="border-bottom-gray">Projects</h3>
+        {% for project in projects %}
+          <div class="project">
+            <h5>{{ project.title }}</h5>
+            <p>{{ project.description }}</p>
+            {% if project.technologies is not empty %}
+              <strong>Technologies used:</strong>
+              {% for tech in project.technologies %}
+                <span class="badge text-bg-secondary">{{ tech }}</span>
+              {% endfor %}
+            {% endif %}
+          </div>
+        {% else %}
+          <p class="text-muted">Sin proyectos registrados.</p>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="col-3">
+      <h3 class="border-bottom-gray">Skills & Tools</h3>
+      <h4>Backend</h4>
+      <ul><li>PHP</li></ul>
+      <h4>Frontend</h4>
+      <ul><li>HTML</li><li>CSS</li></ul>
+      <h4>Frameworks</h4>
+      <ul><li>Laravel</li><li>Bootstrap</li></ul>
+      <h3 class="border-bottom-gray">Languages</h3>
+      <ul><li>Spanish</li><li>English</li></ul>
+    </div>
+  </div>
+
+  <div id="resume-footer" class="row">
+    <div class="col">
+      <a href="/login">Administrar</a>
+    </div>
+  </div>
+{% endblock %}
