@@ -1,0 +1,13 @@
+{% extends "layout.twig" %}
+{% block title %}{{ id ? 'Editar' : 'Nuevo' }} usuario{% endblock %}
+{% block content %}
+  <h1 class="h3 mb-4">{{ id ? 'Editar' : 'Nuevo' }} usuario</h1>
+  <form action="{{ id ? '/admin/users/' ~ id : '/admin/users' }}" method="post">
+    <input type="hidden" name="_csrf" value="{{ csrf_token() }}">
+    {% include 'partials/field.twig' with {name: 'email', label: 'Email', type: 'email'} %}
+    {% include 'partials/field.twig' with {name: 'password', label: 'Contraseña', type: 'password',
+         help: id ? 'Déjala vacía para conservar la actual.' : 'Mínimo 8 caracteres.'} %}
+    <button type="submit" class="btn btn-primary">Guardar</button>
+    <a href="/admin/users" class="btn btn-link">Cancelar</a>
+  </form>
+{% endblock %}

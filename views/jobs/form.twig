@@ -1,0 +1,13 @@
+{% extends "layout.twig" %}
+{% block title %}{{ id ? 'Editar' : 'Nuevo' }} trabajo{% endblock %}
+{% block content %}
+  <h1 class="h3 mb-4">{{ id ? 'Editar' : 'Nuevo' }} trabajo</h1>
+  <form action="{{ id ? '/admin/jobs/' ~ id : '/admin/jobs' }}" method="post">
+    <input type="hidden" name="_csrf" value="{{ csrf_token() }}">
+    {% include 'partials/field.twig' with {name: 'title', label: 'Título', type: 'text'} %}
+    {% include 'partials/field.twig' with {name: 'description', label: 'Descripción', type: 'textarea'} %}
+    {% include 'partials/field.twig' with {name: 'months', label: 'Duración (meses)', type: 'number'} %}
+    <button type="submit" class="btn btn-primary">Guardar</button>
+    <a href="/admin/jobs" class="btn btn-link">Cancelar</a>
+  </form>
+{% endblock %}

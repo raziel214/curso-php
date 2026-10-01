@@ -1,123 +1,18 @@
 <?php
 
-  ini_set('display_errors', 1);
-  ini_set('display_starup_error', 1);
-  error_reporting(E_ALL);
+declare(strict_types=1);
 
-  require_once '../vendor/autoload.php';
+use App\Shared\Infrastructure\Http\Kernel;
+use Laminas\Diactoros\ServerRequestFactory;
+use Laminas\HttpHandlerRunner\Emitter\SapiEmitter;
 
-  use Illuminate\Database\Capsule\Manager as Capsule;
-  use Aura\Router\RouterContainer;
+// Servidor embebido de PHP: dejar que sirva los archivos estáticos.
+if (PHP_SAPI === 'cli-server' && is_file(__DIR__ . parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH))) {
+    return false;
+}
 
-  $capsule = new Capsule;
+$container = require __DIR__ . '/../config/bootstrap.php';
 
-  $capsule->addConnection([
-      'driver'    => 'mysql',
-      'host'      => 'localhost',
-      'database'  => 'cursophp',
-      'username'  => 'root',
-      'password'  => '',
-      'charset'   => 'utf8',
-      'collation' => 'utf8_unicode_ci',
-      'prefix'    => '',
-  ]);
+$response = $container->get(Kernel::class)->handle(ServerRequestFactory::fromGlobals());
 
-    // Make this Capsule instance available globally via static methods... (optional)
-  $capsule->setAsGlobal();
-
-    // Setup the Eloquent ORM... (optional; unless you've used setEventDispatcher())
-  $capsule->bootEloquent();
-
-  $request = Zend\Diactoros\ServerRequestFactory::fromGlobals(
-      $_SERVER,
-      $_GET,
-      $_POST,
-      $_COOKIE,
-      $_FILES
-  );
-
-  $routerContainer = new RouterContainer();
-  $map = $routerContainer->getMap();$routerContainer = new RouterContainer();
-  $map = $routerContainer->getMap();
-  $map->get('index','/',[
-    'controller'=>'App\Controllers\indexController',
-    'action'=>'indexAction'
-  ]);
-  $map->get('addJobs','/jobs/add',[
-    'controller'=>'App\Controllers\JobsController',
-    'action'=>'getAddJobAction'
-  ]);
-  $map->post('saveJobs','/jobs/add',[
-    'controller'=>'App\Controllers\JobsController',
-    'action'=>'getAddJobAction'
-  ]);
-  $map->get('addProject','/project/add',[
-    'controller'=>'App\Controllers\ProjectController',
-    'action'=>'getAddProjectAction'
-  ]);
-  $map->post('saveProject','/project/add',[
-    'controller'=>'App\Controllers\ProjectController',
-    'action'=>'getAddProjectAction'
-  ]);
-  $map->get('addUser', '/users/add', [
-    'controller' => 'App\Controllers\UsersController',
-    'action' => 'getAddUser'
-  ]);
-  $map->post('saveUser', '/users/save', [
-    'controller' => 'App\Controllers\UsersController',
-    'action' => 'postSaveUser'
-  ]);
-
-  $map->get('loginForm', '/login', [
-    'controller' => 'App\Controllers\AuthController',
-    'action' => 'getLogin'
-  ]);
-
-  $map->post('auth', '/auth', [
-    'controller' => 'App\Controllers\AuthController',
-    'action' => 'postLogin'
-  ]);
-
-  $matcher = $routerContainer->getMatcher();
-  $route = $matcher->match($request);
-
-  function printElement($job) {
-      // if($job->visible == false) {
-      //   return;
-      // }
-    
-      echo '<li class="work-position">';
-      echo '<h5>' . $job->title . '</h5>';
-      echo '<p>' . $job->description . '</p>';
-      echo '<p>' . $job->getDurationAsString() . '</p>';
-      echo '<strong>Achievements:</strong>';
-      echo '<ul>';
-      echo '<li>Lorem ipsum dolor sit amet, 80% consectetuer adipiscing elit.</li>';
-      echo '<li>Lorem ipsum dolor sit amet, 80% consectetuer adipiscing elit.</li>';
-      echo '<li>Lorem ipsum dolor sit amet, 80% consectetuer adipiscing elit.</li>';
-      echo '</ul>';
-      echo '</li>';
-  }
-
-
-  if (!$route) {
-    echo'No Route';
-    echo'<br>';
-  }else {
-
-    $handlerData=$route->handler;
-    $controllerName= $handlerData['controller'];
-    $actionName=$handlerData['action'];
-    $controller= new $controllerName;
-    $response=$controller->$actionName($request);
-
-    foreach ($response->getHeaders() as $name => $values) {
-
-      foreach($values as  $value){
-        header(sprintf('%s: %s', $name, $value), false);
-      }
-    }
-    http_response_code($response->getStatusCode());
-    echo $response->getBody();
-  }
-?>
+(new SapiEmitter())->emit($response);
