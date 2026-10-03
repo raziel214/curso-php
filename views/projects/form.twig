@@ -1,0 +1,13 @@
+{% extends "layout.twig" %}
+{% block title %}{{ id ? 'Editar' : 'Nuevo' }} proyecto{% endblock %}
+{% block content %}
+  <h1 class="h3 mb-4">{{ id ? 'Editar' : 'Nuevo' }} proyecto</h1>
+  <form action="{{ id ? '/admin/projects/' ~ id : '/admin/projects' }}" method="post">
+    <input type="hidden" name="_csrf" value="{{ csrf_token() }}">
+    {% include 'partials/field.twig' with {name: 'title', label: 'Título', type: 'text'} %}
+    {% include 'partials/field.twig' with {name: 'description', label: 'Descripción', type: 'textarea'} %}
+    {% include 'partials/field.twig' with {name: 'technologies', label: 'Tecnologías', type: 'text', help: 'Separadas por comas: PHP, MySQL, Twig'} %}
+    <button type="submit" class="btn btn-primary">Guardar</button>
+    <a href="/admin/projects" class="btn btn-link">Cancelar</a>
+  </form>
+{% endblock %}
